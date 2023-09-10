@@ -1,0 +1,213 @@
+<html>
+    <head>
+        <title>CRUD</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <!-- Font Awesome -->
+        <link
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+            rel="stylesheet"
+            />
+        <!-- MDB -->
+        <link
+            href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.4.1/mdb.min.css"
+            rel="stylesheet"
+            />
+    </head>
+    <body>
+        <h2 class="p-4" style="text-align: center">
+            CRUD
+        </h2>
+        <div class="row g-3 p-3">
+            <div class="col-sm">
+                <div class="form-outline">
+                    <input type="text" id="projectName" class="form-control" autofocus/>
+                    <label class="form-label" for="form10Example1">Project Name</label>
+                </div>
+            </div>
+            <div class="col-sm">
+                <div class="form-outline">
+                    <input type="number" id="teamSize" class="form-control" />
+                    <label class="form-label" for="form10Example2">Team Size</label>
+                </div>
+            </div>
+            <div class="col-sm">
+                <select class="form-select" id="technology" aria-label="Default select example">
+                    <option value="ASP.NET">ASP.NET</option>
+                    <option value="J2EE">J2EE</option>
+                    <option value="PHP">PHP</option>
+                </select>
+            </div>
+        </div>
+        <div class="row" style="display: flex; justify-content: center">
+            <button type="button" class="btn btn-dark col-1" style="display: block !important; justify-content: center !important; text-align: center" onclick="SendData()">Submit</button>
+        </div>
+        <br /><hr />
+        <h2 class="p-4" style="text-align: center">
+            All Data
+        </h2>
+        <table class="table align-middle" style="text-align: center">
+            <thead>
+                <tr>
+                    <th scope="col">Sr No.</th>
+                    <th scope="col">Project Name</th>
+                    <th scope="col">Team Size</th>
+                    <th scope="col">Technology</th>
+                    <th scope="col" colspan="2">Action</th>
+                </tr>
+            </thead>
+            <tbody id="studentData">
+            </tbody>
+        </table>
+
+        <!-- Update Modal -->
+        <div
+            class="modal fade"
+            id="updateModal"
+            tabindex="-1"
+            aria-labelledby="exampleModalLabel"
+            aria-hidden="true"
+            >
+            <div class="modal-dialog modal-md">
+                <div class="modal-content">
+                    <div class="modal-body p-4">
+                        <!-- Pills content -->
+                        <div class="tab-content">
+                            <div
+                                class="tab-pane fade show active"
+                                id="pills-login"
+                                role="tabpanel"
+                                aria-labelledby="mdb-tab-login"
+                                >
+                                <form>
+                                    <div class="text-center mb-3">
+                                        <h4 class="mb-4">Update Student</h4>
+
+                                        <div class="form-outline mb-4">
+                                            <input type="hidden" id="updatedStudentId" />
+                                            <input type="email" id="updatedProjectName" class="form-control" autofocus />
+                                        </div>
+
+                                        <div class="form-outline mb-4">
+                                            <input type="number" id="updatedTeamSize" class="form-control" />
+                                        </div>
+
+                                        <div class="form-outline mb-4">
+                                            <select class="form-select" id="updatedTechnology" aria-label="Default select example">
+                                                <option value="ASP.NET">ASP.NET</option>
+                                                <option value="J2EE">J2EE</option>
+                                                <option value="PHP">PHP</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <button type="button" class="btn btn-dark btn-block mb-4" onclick="UpdateStudentData()">Update</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!--Delete Modal -->
+        <div
+            class="modal fade"
+            id="deleteModal"
+            tabindex="-1"
+            aria-labelledby="exampleModalLabel"
+            aria-hidden="true"
+            >
+            <div class="modal-dialog modal-md">
+                <div class="modal-content">
+                    <div class="modal-body p-4">
+                        <!-- Pills content -->
+                        <div class="tab-content">
+                            <div
+                                class="tab-pane fade show active"
+                                id="pills-login"
+                                role="tabpanel"
+                                aria-labelledby="mdb-tab-login"
+                                >
+                                <form>
+                                    <div class="text-center mb-3">
+                                        <h4 class="mb-4">Delete Student Record ?</h4>
+
+                                        <div class="form-outline mb-4">
+                                            <input type="hidden" id="deleteStudentId" />
+                                        </div>
+                                    </div>
+                                    <button type="button" class="btn btn-danger btn-block mb-4" onclick="DeleteStudentData()">Delete</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script
+            type="text/javascript"
+            src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.4.1/mdb.min.js"
+        ></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+        <script>
+                                        $(init);
+
+                                        function init() {
+                                            FetchStudentData();
+                                        }
+                                        async function SendData() {
+                                            let data = {
+                                                projectName: $("#projectName").val(),
+                                                teamSize: $("#teamSize").val(),
+                                                technology: $("#technology option:selected").val()
+                                            };
+
+                                            $.post("./AddStudentData", data, function (response) {
+                                                $("#projectName").val("");
+                                                $("#teamSize").val("");
+                                                $("#technology").val("");
+                                                window.location.reload();
+                                                console.log(response);
+                                            });
+
+                                        }
+
+                                        async function FetchStudentData() {
+                                            let response = await $.post("./FetchStudentData");
+                                            $("#studentData").html(response);
+                                        }
+
+                                        function UpdateData(id, projectName, teamSize, technology) {
+                                            $("#updatedStudentId").val(id);
+                                            $("#updatedProjectName").val(projectName);
+                                            $("#updatedTeamSize").val(teamSize);
+                                            $("#updatedTechnology").val(technology);
+                                        }
+
+                                        function DeleteData(id) {
+                                            $("#deleteStudentId").val(id);
+                                        }
+
+                                        function UpdateStudentData() {
+                                            let data = {
+                                                updatedStudentId: $("#updatedStudentId").val(),
+                                                updatedProjectName: $("#updatedProjectName").val(),
+                                                updatedTeamSize: $("#updatedTeamSize").val(),
+                                                updatedTechnology: $("#updatedTechnology option:selected").val()
+                                            };
+
+                                            $.post("./UpdateStudentData", data, function (response) {
+                                                console.log(response);
+                                                window.location.reload();
+                                            });
+                                        }
+
+                                        function DeleteStudentData() {
+                                            $.post("./DeleteStudentData", {deleteStudentId: $("#deleteStudentId").val()}, function (response) {
+                                                console.log(response);
+                                            });
+                                        }
+        </script>
+    </body>
+</html>
