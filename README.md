@@ -70,14 +70,5 @@ Contributions are welcome! If you'd like to contribute to this project, please f
 
 5. Submit a pull request to merge your changes into the main repository.
 
-## License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## Acknowledgments
-
-Special thanks to [Author Name] for inspiring and guiding this project.
-
----
 
 Feel free to customize this README with specific details about your project, such as installation instructions, troubleshooting tips, or additional features you've implemented.
